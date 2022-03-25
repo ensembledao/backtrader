@@ -1353,12 +1353,12 @@ class Cerebro(with_metaclass(MetaParams, object)):
             writer.writedict(dict(Cerebro=cerebroinfo))
             writer.stop()
 
-    async def _brokernotify(self):
+    def _brokernotify(self):
         '''
         Internal method which kicks the broker and delivers any broker
         notification to the strategy
         '''
-        await self._broker.next()
+        self._broker.next()
         while True:
             order = self._broker.get_notification()
             if order is None:
@@ -1416,7 +1416,7 @@ class Cerebro(with_metaclass(MetaParams, object)):
             if self._event_stop:  # stop if requested
                 return
 
-            await self._brokernotify()
+            self._brokernotify()
             if self._event_stop:  # stop if requested
                 return
 
@@ -1456,7 +1456,7 @@ class Cerebro(with_metaclass(MetaParams, object)):
             for data in datas:
                 data.advance(datamaster=data0)
 
-            await self._brokernotify()
+            self._brokernotify()
             if self._event_stop:  # stop if requested
                 return
 
@@ -1621,7 +1621,7 @@ class Cerebro(with_metaclass(MetaParams, object)):
                         if self._event_stop:  # stop if requested
                             return
 
-            await self._brokernotify()
+            self._brokernotify()
             if self._event_stop:  # stop if requested
                 return
 
